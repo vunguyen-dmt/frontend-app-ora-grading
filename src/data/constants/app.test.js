@@ -17,7 +17,7 @@ describe('app constants', () => {
   });
   test('locationId returns trimmed pathname', () => {
     const old = window.location;
-    window.location = { pathName: '/somePath.jpg' };
+    window.location = { pathName: `${platform.PUBLIC_PATH}somePath.jpg` };
     expect(constants.locationId()).toEqual(window.location.pathname.replace(platform.PUBLIC_PATH, ''));
     window.location = old;
   });

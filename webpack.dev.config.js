@@ -9,5 +9,8 @@ config.resolve.modules = [
 ];
 
 config.module.rules[0].exclude = /node_modules\/(?!(query-string|split-on-first|strict-uri-encode|@edx))/;
+config['devServer']['https'] = true;
+config['devServer']['host'] = process.env.HOST ||'0.0.0.0';
+config['devServer']['port'] = process.env.PORT || 8080;
 
 module.exports = config;

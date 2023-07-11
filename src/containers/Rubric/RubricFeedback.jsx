@@ -49,9 +49,7 @@ export class RubricFeedback extends React.Component {
             <FormattedMessage {...messages.overallComments} />
           </span>
           <InfoPopover>
-            <div>
-              <FormattedMessage {...messages.feedbackPrompt} />
-            </div>
+            <div>{feedbackPrompt}</div>
           </InfoPopover>
         </Form.Label>
         <Form.Control

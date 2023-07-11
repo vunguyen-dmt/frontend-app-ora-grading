@@ -21,9 +21,7 @@ export const ListViewBreadcrumb = ({ courseId, oraName }) => (
       <FormattedMessage {...messages.backToResponses} />
     </Hyperlink>
     <p className="py-4">
-      <span className="h3">
-        <FormattedMessage {...messages.oraName}/>
-      </span>
+      <span className="h3">{oraName}</span>
       <Hyperlink className="align-middle" destination={urls.ora(courseId, locationId())}>
         <Icon src={Launch} className="d-inline-block" />
       </Hyperlink>
