@@ -39,3 +39,4 @@ export default [
   paragonMessages,
   appMessages,
 ];
+

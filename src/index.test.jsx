@@ -8,10 +8,7 @@ import {
   subscribe,
 } from '@edx/frontend-platform';
 
-import { messages as footerMessages } from '@edx/frontend-component-footer';
-import { messages as headerMesssages } from '@edx/frontend-component-header';
-
-import appMessages from './i18n';
+import messages from './i18n';
 import * as app from '.';
 
 jest.mock('react-dom', () => ({
@@ -19,10 +16,10 @@ jest.mock('react-dom', () => ({
 }));
 
 jest.mock('@edx/frontend-component-footer', () => ({
-  messages: 'frotnend-footer-messages',
+  messages: 'frontend-footer-messages',
 }));
 jest.mock('@edx/frontend-component-header', () => ({
-  messages: 'frotnend-header-messages',
+  messages: 'frontend-header-messages',
 }));
 
 jest.mock('@edx/frontend-platform', () => ({
@@ -70,7 +67,7 @@ describe('app registry', () => {
   test('initialize is called with footerMessages and requireAuthenticatedUser', () => {
     expect(initialize).toHaveBeenCalledTimes(1);
     const initializeArg = initialize.mock.calls[0][0];
-    expect(initializeArg.messages).toEqual([appMessages, headerMesssages, footerMessages]);
+    expect(initializeArg.messages).toEqual(messages);
     expect(initializeArg.requireAuthenticatedUser).toEqual(true);
   });
   test('initialize config loads support url if available', () => {

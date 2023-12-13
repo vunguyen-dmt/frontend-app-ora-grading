@@ -64,8 +64,8 @@ describe('validation grading selectors unit tests', () => {
       expect(preSelectors).toEqual([selected.gradingData, appSelectors.rubric.config]);
     });
     describe('returned object', () => {
-      const feedbackOptional = { feedback: feedbackRequirement.optional };
-      const feedbackRequired = { feedback: feedbackRequirement.required };
+      const feedbackOptional = { feedback: feedbackRequirement.optional, options: [1] };
+      const feedbackRequired = { feedback: feedbackRequirement.required, options: [1] };
       describe('feedback', () => {
         const validFeedback = { feedback: 'Fair' };
         const emptyFeedback = { feedback: '' };
@@ -84,6 +84,14 @@ describe('validation grading selectors unit tests', () => {
             { criteria: [feedbackOptional, feedbackOptional] },
           );
           expect(output.map(({ selectedOption }) => selectedOption)).toEqual([true, false]);
+        });
+        it('returns true criteria options are empty', () => {
+          const emptyOptionsFeedback = { ...feedbackOptional, options: [] };
+          const output = cb(
+            { criteria: [{ selectedOption: '' }, { selectedOption: 'Invalid' }] },
+            { criteria: [emptyOptionsFeedback, emptyOptionsFeedback] },
+          );
+          expect(output.map(({ selectedOption }) => selectedOption)).toEqual([true, true]);
         });
       });
     });
@@ -123,8 +131,8 @@ describe('validation grading selectors unit tests', () => {
     let show;
     let criterionFeedback;
     const selector = selectors.validation.criterionFeedbackIsInvalid;
-    const mockMethods = (showvalue, feedback) => {
-      selectors.validation.show = () => showvalue;
+    const mockMethods = (showValue, feedback) => {
+      selectors.validation.show = () => showValue;
       selectors.validation.criterionFeedback = () => feedback;
     };
     beforeAll(() => {
@@ -160,8 +168,8 @@ describe('validation grading selectors unit tests', () => {
   describe('validation.criterionSelectedOptionIsInvalid selector', () => {
     const testState = { some: 'state' };
     let show;
-    const mockMethods = (showvalue, selectedValue) => {
-      selectors.validation.show = () => showvalue;
+    const mockMethods = (showValue, selectedValue) => {
+      selectors.validation.show = () => showValue;
       selectors.validation.criterionSelectedOption.mockReturnValueOnce(selectedValue);
     };
     const selector = selectors.validation.criterionSelectedOptionIsInvalid;
