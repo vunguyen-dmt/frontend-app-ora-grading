@@ -1,5 +1,6 @@
 import { StrictDict } from 'utils';
 import { locationId } from 'data/constants/app';
+import { bool } from 'prop-types';
 import { paramKeys } from './constants';
 import urls from './urls';
 import {
@@ -52,7 +53,32 @@ const fetchSubmission = (submissionUUID) => get(
     [paramKeys.oraLocation]: locationId(),
     [paramKeys.submissionUUID]: submissionUUID,
   }),
-).then(response => response.data);
+).then(response => {
+  // filter out files that identitcal with other files but don't have download url.
+  if (response.data && response.data.response && response.data.response.files
+     && response.data.response.files.length > 0) {
+    const hasDownloadUrlData = response.data.response.files.filter(f => f.downloadUrl);
+    const files = [];
+    response.data.response.files.forEach(f1 => {
+      let keep = true;
+      if (!f1.downloadUrl) {
+        hasDownloadUrlData.forEach(f2 => {
+          if (f2.name === f1.name && f2.downloadUrl === f1.downloadUrl && f2.size === f1.size) {
+            keep = false;
+          }
+        });
+      }
+
+      if (keep) {
+        files.push(f1);
+      }
+    });
+
+    response.data.response.files = files;
+  }
+
+  return response.data;
+});
 
 /**
  * get('/api/submission/files', { oraLocation, submissionUUID })
@@ -65,7 +91,31 @@ const fetchSubmissionFiles = (submissionUUID) => get(
     [paramKeys.oraLocation]: locationId(),
     [paramKeys.submissionUUID]: submissionUUID,
   }),
-).then(response => response.data);
+).then(response => {
+  // filter out files that identitcal with other files but don't have download url.
+  if (response.data && response.data.files
+     && response.data.files.length > 0) {
+    const hasDownloadUrlData = response.data.files.filter(f => f.downloadUrl);
+    const files = [];
+    response.data.files.forEach(f1 => {
+      let keep = true;
+      if (!f1.downloadUrl) {
+        hasDownloadUrlData.forEach(f2 => {
+          if (f2.name === f1.name && f2.downloadUrl === f1.downloadUrl && f2.size === f1.size) {
+            keep = false;
+          }
+        });
+      }
+
+      if (keep) {
+        files.push(f1);
+      }
+    });
+
+    response.data.files = files;
+  }
+  return response.data;
+});
 
 /**
  * fetches the current grade, gradeStatus, and rubricResponse data for the given submission
