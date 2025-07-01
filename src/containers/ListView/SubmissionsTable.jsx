@@ -97,6 +97,11 @@ export class SubmissionsTable extends React.Component {
               accessor: this.userAccessor,
             },
             {
+              Header: this.translate(messages.userFullName),
+              accessor: submissionFields.fullname,
+              disableFilters: true,
+            },
+            {
               Header: this.dateSubmittedLabel,
               accessor: submissionFields.dateSubmitted,
               Cell: this.formatDate,

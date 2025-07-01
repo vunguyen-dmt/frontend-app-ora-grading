@@ -21,15 +21,19 @@ export const ReviewActions = ({
   score: { pointsEarned, pointsPossible },
   showRubric,
   userDisplay,
+  fullname,
   isLoaded,
 }) => (
   <div>
     <ActionRow className="review-actions">
       <span className="review-actions-username">
         <span className="lead">{userDisplay}</span>
-        { gradingStatus && (
-          <StatusBadge className="review-actions-status mr-3" status={gradingStatus} />
-        )}
+        <div className="user-info-display">
+          <div>
+            <span className="lead">{fullname}</span>{ gradingStatus && (<StatusBadge className="review-actions-status mr-3" status={gradingStatus} />)}
+          </div>
+          <div>{userDisplay}</div>
+        </div>
         <span className="small">
           {pointsPossible && (
             <FormattedMessage
@@ -56,6 +60,7 @@ export const ReviewActions = ({
 ReviewActions.defaultProps = {
   isLoaded: false,
   gradingStatus: null,
+  fullname: '',
 };
 ReviewActions.propTypes = {
   gradingStatus: PropTypes.string,
@@ -67,6 +72,7 @@ ReviewActions.propTypes = {
   showRubric: PropTypes.bool.isRequired,
   toggleShowRubric: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool,
+  fullname: PropTypes.string,
 };
 
 export const mapStateToProps = (state) => ({

@@ -14,7 +14,7 @@ const mkSimpleSelector = (cb) => createSelector([module.appSelector], cb);
 export const simpleSelectors = {
   courseMetadata: mkSimpleSelector(app => app.courseMetadata),
   isGrading: mkSimpleSelector(app => app.isGrading),
-  isEnabled: mkSimpleSelector(app => app.isEnabled),
+  isEnabled: mkSimpleSelector(app => true),
   oraMetadata: mkSimpleSelector(app => app.oraMetadata),
   showReview: mkSimpleSelector(app => app.showReview),
   showRubric: mkSimpleSelector(app => app.showRubric),
