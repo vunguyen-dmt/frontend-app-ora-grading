@@ -27,7 +27,6 @@ export const ReviewActions = ({
   <div>
     <ActionRow className="review-actions">
       <span className="review-actions-username">
-        <span className="lead">{userDisplay}</span>
         <div className="user-info-display">
           <div>
             <span className="lead">{fullname}</span>{ gradingStatus && (<StatusBadge className="review-actions-status mr-3" status={gradingStatus} />)}
@@ -81,6 +80,7 @@ export const mapStateToProps = (state) => ({
   score: selectors.grading.selected.score(state),
   showRubric: selectors.app.showRubric(state),
   isLoaded: selectors.requests.isCompleted(state, { requestKey: RequestKeys.fetchSubmission }),
+  fullname: selectors.grading.selected.fullname(state),
 });
 
 export const mapDispatchToProps = {
