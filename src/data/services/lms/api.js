@@ -47,12 +47,29 @@ const initializeApp = () => get(
  *   },
  * }
  */
+const filterDuplicateFiles = (files) => {
+  const withDownloadUrl = files.filter(f => f.downloadUrl);
+  return files.filter(f => {
+    if (!f.downloadUrl) {
+      return !withDownloadUrl.some(
+        f2 => f2.name === f.name && f2.description === f.description && f2.size === f.size,
+      );
+    }
+    return true;
+  });
+};
+
 const fetchSubmission = (submissionUUID) => get(
   stringifyUrl(urls.fetchSubmissionUrl(), {
     [paramKeys.oraLocation]: locationId(),
     [paramKeys.submissionUUID]: submissionUUID,
   }),
-).then(response => response.data);
+).then(response => {
+  if (response.data?.response?.files?.length > 0) {
+    response.data.response.files = filterDuplicateFiles(response.data.response.files);
+  }
+  return response.data;
+});
 
 /**
  * get('/api/submission/files', { oraLocation, submissionUUID })
@@ -65,7 +82,12 @@ const fetchSubmissionFiles = (submissionUUID) => get(
     [paramKeys.oraLocation]: locationId(),
     [paramKeys.submissionUUID]: submissionUUID,
   }),
-).then(response => response.data);
+).then(response => {
+  if (response.data?.files?.length > 0) {
+    response.data.files = filterDuplicateFiles(response.data.files);
+  }
+  return response.data;
+});
 
 /**
  * fetches the current grade, gradeStatus, and rubricResponse data for the given submission

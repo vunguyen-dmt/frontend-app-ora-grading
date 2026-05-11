@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { useIntl, FormattedMessage } from '@edx/frontend-platform/i18n';
+import { Alert } from '@openedx/paragon';
 
 import FileCard from './FileCard';
 import { ErrorBanner, LoadingBanner } from './Banners';
@@ -23,11 +24,22 @@ export const FileRenderer = ({
   } = renderHooks({ file, intl });
   return (
     <FileCard key={file.downloadUrl} file={file}>
-      {isLoading && <LoadingBanner />}
+      {isLoading && file.downloadUrl && <LoadingBanner />}
       {errorStatus ? (
         <ErrorBanner {...error} />
       ) : (
-        <Renderer {...rendererProps} />
+        <>
+          {file.downloadUrl && <Renderer {...rendererProps} />}
+          {!file.downloadUrl && (
+            <Alert variant="danger">
+              <FormattedMessage
+                defaultMessage="File not found"
+                description="File not found error message"
+                id="ora-grading.ResponseDisplay.FileRenderer.fileNotFound"
+              />
+            </Alert>
+          )}
+        </>
       )}
     </FileCard>
   );

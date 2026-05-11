@@ -81,6 +81,11 @@ const messages = defineMessages({
     defaultMessage: 'Loading responses',
     description: 'loading text for submission response list',
   },
+  userFullName: {
+    id: 'ora-grading.ListView.userFullName',
+    defaultMessage: 'Full name',
+    description: '',
+  },
 });
 
 export default messages;

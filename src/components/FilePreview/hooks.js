@@ -70,6 +70,10 @@ export const renderHooks = ({
 
   const stopLoading = (status = null) => setState({ isLoading: false, errorStatus: status });
 
+  const onRenderError = () => {
+    setIsLoading(false);
+  };
+
   const errorMessage = (
     module.ERROR_STATUSES[errorStatus] || module.ERROR_STATUSES[ErrorStatuses.serverError]
   );
@@ -88,7 +92,7 @@ export const renderHooks = ({
   const rendererProps = {
     fileName: file.name,
     url: file.downloadUrl,
-    onError: stopLoading,
+    onError: onRenderError,
     onSuccess: () => stopLoading(),
   };
 

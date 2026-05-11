@@ -95,6 +95,11 @@ export const SubmissionsTable = ({
             accessor: userAccessor,
           },
           {
+            Header: translate(messages.userFullName),
+            accessor: submissionFields.fullname,
+            disableFilters: true,
+          },
+          {
             Header: dateSubmittedLabel,
             accessor: submissionFields.dateSubmitted,
             Cell: formatDate,
