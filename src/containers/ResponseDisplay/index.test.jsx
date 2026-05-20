@@ -1,7 +1,13 @@
+import { MathJaxContext } from 'better-react-mathjax';
 import { render, screen } from '@testing-library/react';
 import { fileUploadResponseOptions } from 'data/services/lms/constants';
 import { selectors } from 'data/redux';
 import { ResponseDisplay, mapStateToProps } from '.';
+
+jest.mock('better-react-mathjax', () => ({
+  MathJax: ({ children }) => <div data-testid="mathjax">{children}</div>,
+  MathJaxContext: ({ children }) => <div>{children}</div>,
+}));
 
 jest.mock('data/redux', () => ({
   selectors: {
@@ -13,10 +19,15 @@ jest.mock('data/redux', () => ({
     app: {
       ora: {
         fileUploadResponseConfig: jest.fn((state) => state.fileUploadResponseConfig || 'optional'),
+        prompts: jest.fn((state) => state.prompts || ['prompt']),
       },
     },
   },
 }));
+
+jest.mock('./PromptDisplay', () => jest.fn(({ prompt }) => (
+  <div data-testid="prompt-display">Prompt: {prompt}</div>
+)));
 
 jest.mock('./SubmissionFiles', () => jest.fn(({ files }) => (
   <div data-testid="submission-files">Files: {files.length}</div>
@@ -50,6 +61,7 @@ describe('ResponseDisplay', () => {
       ],
     },
     fileUploadResponseConfig: 'optional',
+    prompts: ['prompt one', 'prompt two'],
   };
 
   beforeAll(() => {
@@ -62,13 +74,21 @@ describe('ResponseDisplay', () => {
 
   describe('behavior', () => {
     it('renders response display container', () => {
-      const { container } = render(<ResponseDisplay {...defaultProps} />);
+      const { container } = render(
+        <MathJaxContext>
+          <ResponseDisplay {...defaultProps} />
+        </MathJaxContext>,
+      );
       const responseDisplay = container.querySelector('.response-display');
       expect(responseDisplay).toBeInTheDocument();
     });
 
     it('displays text content in cards', () => {
-      const { container } = render(<ResponseDisplay {...defaultProps} />);
+      const { container } = render(
+        <MathJaxContext>
+          <ResponseDisplay {...defaultProps} />
+        </MathJaxContext>,
+      );
       const textContents = container.querySelectorAll('.response-display-text-content');
       expect(textContents).toHaveLength(defaultProps.response.text.length);
       expect(textContents[0]).toHaveTextContent('some text response here');
@@ -76,29 +96,55 @@ describe('ResponseDisplay', () => {
     });
 
     it('displays submission files when file upload is allowed', () => {
-      render(<ResponseDisplay {...defaultProps} />);
+      render(
+        <MathJaxContext>
+          <ResponseDisplay {...defaultProps} />
+        </MathJaxContext>,
+      );
       const submissionFiles = screen.getByTestId('submission-files');
       expect(submissionFiles).toBeInTheDocument();
       expect(submissionFiles).toHaveTextContent('Files: 2');
     });
 
     it('displays preview display when file upload is allowed', () => {
-      render(<ResponseDisplay {...defaultProps} />);
+      render(
+        <MathJaxContext>
+          <ResponseDisplay {...defaultProps} />
+        </MathJaxContext>,
+      );
       const previewDisplay = screen.getByTestId('preview-display');
       expect(previewDisplay).toBeInTheDocument();
       expect(previewDisplay).toHaveTextContent('Preview: 2');
     });
 
     it('does not display file components when file upload is disabled', () => {
-      render(<ResponseDisplay {...defaultProps} fileUploadResponseConfig={fileUploadResponseOptions.none} />);
+      render(
+        <MathJaxContext>
+          <ResponseDisplay {...defaultProps} fileUploadResponseConfig={fileUploadResponseOptions.none} />
+        </MathJaxContext>,
+      );
       expect(screen.queryByTestId('submission-files')).not.toBeInTheDocument();
       expect(screen.queryByTestId('preview-display')).not.toBeInTheDocument();
     });
 
     it('renders empty content when no text response provided', () => {
-      const { container } = render(<ResponseDisplay {...defaultProps} response={{ text: [], files: [] }} />);
+      const { container } = render(
+        <MathJaxContext>
+          <ResponseDisplay {...defaultProps} response={{ text: [], files: [] }} />
+        </MathJaxContext>,
+      );
       const textContents = container.querySelectorAll('.response-display-text-content');
       expect(textContents).toHaveLength(0);
+    });
+
+    it('displays single prompt when only one prompt', () => {
+      render(<ResponseDisplay {...defaultProps} prompts={['only one prompt']} />);
+      expect(screen.queryAllByTestId('prompt-display')).toHaveLength(1);
+    });
+
+    it('displays multiple prompts when there are multiple prompts', () => {
+      render(<ResponseDisplay {...defaultProps} />);
+      expect(screen.queryAllByTestId('prompt-display')).toHaveLength(2);
     });
   });
 
@@ -109,6 +155,7 @@ describe('ResponseDisplay', () => {
         files: ['file1', 'file2'],
       },
       fileUploadResponseConfig: 'required',
+      prompts: ['prompt'],
     };
 
     it('maps response from grading.selected.response selector', () => {
@@ -119,6 +166,11 @@ describe('ResponseDisplay', () => {
     it('maps fileUploadResponseConfig from app.ora.fileUploadResponseConfig selector', () => {
       const mapped = mapStateToProps(testState);
       expect(mapped.fileUploadResponseConfig).toEqual(selectors.app.ora.fileUploadResponseConfig(testState));
+    });
+
+    it('maps prompts from app.ora.prompts selector', () => {
+      const mapped = mapStateToProps(testState);
+      expect(mapped.prompts).toEqual(selectors.app.ora.prompts(testState));
     });
   });
 });
