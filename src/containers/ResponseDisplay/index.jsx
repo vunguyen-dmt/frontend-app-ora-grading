@@ -59,7 +59,13 @@ export class ResponseDisplay extends React.Component {
       <div className="response-display">
         {!multiPrompt && <PromptDisplay prompt={prompts[0]} />}
         {this.allowFileUpload && <SubmissionFiles files={this.submittedFiles} data-testid="submission-files" />}
-        {this.allowFileUpload && <PreviewDisplay files={this.submittedFiles} data-testid="allow-file-upload" />}
+        {this.allowFileUpload && (
+          <PreviewDisplay
+            files={this.submittedFiles}
+            submissionUUID={this.props.submissionUUID}
+            data-testid="allow-file-upload"
+          />
+        )}
         {
           /*  eslint-disable react/no-array-index-key */
           this.textContents.map((textContent, index) => (
@@ -99,12 +105,14 @@ ResponseDisplay.propTypes = {
     Object.values(fileUploadResponseOptions),
   ),
   prompts: PropTypes.arrayOf(PropTypes.string).isRequired,
+  submissionUUID: PropTypes.string,
 };
 
 export const mapStateToProps = (state) => ({
   response: selectors.grading.selected.response(state),
   fileUploadResponseConfig: selectors.app.ora.fileUploadResponseConfig(state),
   prompts: selectors.app.ora.prompts(state),
+  submissionUUID: selectors.grading.selected.submissionUUID(state),
 });
 
 export const mapDispatchToProps = {};

@@ -47,17 +47,7 @@ const initializeApp = () => get(
  *   },
  * }
  */
-const filterDuplicateFiles = (files) => {
-  const withDownloadUrl = files.filter(f => f.downloadUrl);
-  return files.filter(f => {
-    if (!f.downloadUrl) {
-      return !withDownloadUrl.some(
-        f2 => f2.name === f.name && f2.description === f.description && f2.size === f.size,
-      );
-    }
-    return true;
-  });
-};
+const filterDuplicateFiles = (files) => files.filter(f => f.downloadUrl);
 
 const fetchSubmission = (submissionUUID) => get(
   stringifyUrl(urls.fetchSubmissionUrl(), {
@@ -152,6 +142,55 @@ const updateGrade = (submissionUUID, gradeData) => post(
   gradeData,
 ).then(response => response.data);
 
+const aiGradeSubmission = (oraLocation, submissionUUID) => post(
+  urls.aiGradeSubmissionUrl(),
+  { oraLocation, submissionUUID },
+).then(response => response.data);
+
+const aiGraderFeedback = (oraLocation, submissionUUID, thumb, message) => post(
+  urls.aiGraderFeedbackUrl(),
+  {
+    feedback: {
+      ora_location: oraLocation,
+      submission_uuid: submissionUUID,
+      grader_mode: 'single-submission',
+      message: message || null,
+      thumb: thumb || null,
+    },
+  },
+).then(response => response.data);
+
+const parseSubmissionFile = (oraBlockId, submissionUUID, fileIndex) => get(
+  urls.parseSubmissionFileUrl(oraBlockId, submissionUUID, fileIndex),
+).then(response => response.data);
+
+const summarizeSubmissionFile = (oraBlockId, submissionUUID, fileIndex) => get(
+  urls.summarizeSubmissionFileUrl(oraBlockId, submissionUUID, fileIndex),
+).then(response => response.data);
+
+const fetchAiGraderConfig = (oraLocation) => get(
+  stringifyUrl(urls.aiGraderConfigUrl(), { oraLocation }),
+).then(response => response.data);
+
+const saveAiGraderConfig = (oraLocation, usernames) => post(
+  urls.aiGraderConfigUrl(),
+  { oraLocation, usernames },
+).then(response => response.data);
+
+const aiGraderFeedbackUpdate = (feedbackId, oraLocation, submissionUUID, thumb, message) => client().put(
+  urls.aiGraderFeedbackUrl(),
+  {
+    id: feedbackId,
+    feedback: {
+      ora_location: oraLocation,
+      submission_uuid: submissionUUID,
+      grader_mode: 'single-submission',
+      message: message || null,
+      thumb: thumb || null,
+    },
+  },
+).then(response => response.data);
+
 export default StrictDict({
   initializeApp,
   fetchSubmission,
@@ -161,4 +200,11 @@ export default StrictDict({
   updateGrade,
   unlockSubmission,
   batchUnlockSubmissions,
+  aiGradeSubmission,
+  aiGraderFeedback,
+  aiGraderFeedbackUpdate,
+  fetchAiGraderConfig,
+  saveAiGraderConfig,
+  parseSubmissionFile,
+  summarizeSubmissionFile,
 });

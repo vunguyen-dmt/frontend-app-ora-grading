@@ -6,13 +6,17 @@ import { Alert } from '@openedx/paragon';
 
 import FileCard from './FileCard';
 import { ErrorBanner, LoadingBanner } from './Banners';
-import { renderHooks } from './hooks';
+import ExtractTextButton from './ExtractTextButton';
+import { renderHooks, getFileType, RENDERERS } from './hooks';
+import { ImageRenderer } from './BaseRenderers';
 
 /**
  * <FileRenderer />
  */
 export const FileRenderer = ({
   file,
+  fileIndex,
+  submissionUUID,
 }) => {
   const intl = useIntl();
   const {
@@ -22,6 +26,10 @@ export const FileRenderer = ({
     error,
     rendererProps,
   } = renderHooks({ file, intl });
+
+  const isImage = RENDERERS[getFileType(file.name)] === ImageRenderer;
+  const imageLoadedSuccessfully = isImage && !isLoading && !errorStatus && file.downloadUrl;
+
   return (
     <FileCard key={file.downloadUrl} file={file}>
       {isLoading && file.downloadUrl && <LoadingBanner />}
@@ -41,6 +49,12 @@ export const FileRenderer = ({
           )}
         </>
       )}
+      {imageLoadedSuccessfully && (
+        <ExtractTextButton
+          submissionUUID={submissionUUID}
+          fileIndex={fileIndex}
+        />
+      )}
     </FileCard>
   );
 };
@@ -51,6 +65,8 @@ FileRenderer.propTypes = {
     name: PropTypes.string,
     downloadUrl: PropTypes.string,
   }).isRequired,
+  fileIndex: PropTypes.number.isRequired,
+  submissionUUID: PropTypes.string.isRequired,
 };
 
 export default FileRenderer;

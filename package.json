@@ -61,6 +61,7 @@
     "react-dom": "^18.3.1",
     "react-helmet": "^6.1.0",
     "react-intl": "6.4.7",
+    "react-markdown": "^8.0.7",
     "react-pdf": "^7.0.0",
     "react-redux": "^7.2.9",
     "react-router": "6.21.3",
@@ -71,6 +72,8 @@
     "redux-logger": "3.0.6",
     "redux-thunk": "2.4.2",
     "regenerator-runtime": "^0.14.0",
+    "remark-breaks": "^3.0.3",
+    "remark-gfm": "^3.0.1",
     "reselect": "^4.0.0",
     "util": "^0.12.4",
     "whatwg-fetch": "^3.6.2"

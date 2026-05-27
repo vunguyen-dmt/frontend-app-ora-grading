@@ -7,16 +7,24 @@ import { isSupported } from 'components/FilePreview/hooks';
 /**
  * <PreviewDisplay />
  */
-export const PreviewDisplay = ({ files }) => (
+export const PreviewDisplay = ({ files, submissionUUID }) => (
   <div className="preview-display">
-    {files.filter(isSupported).map((file) => (
-      <FileRenderer key={file.name} file={file} />
-    ))}
+    {files.map((file, index) => ({ file, originalIndex: index }))
+      .filter(({ file }) => isSupported(file))
+      .map(({ file, originalIndex }) => (
+        <FileRenderer
+          key={file.name}
+          file={file}
+          fileIndex={originalIndex}
+          submissionUUID={submissionUUID}
+        />
+      ))}
   </div>
 );
 
 PreviewDisplay.defaultProps = {
   files: [],
+  submissionUUID: '',
 };
 PreviewDisplay.propTypes = {
   files: PropTypes.arrayOf(
@@ -25,6 +33,7 @@ PreviewDisplay.propTypes = {
       downloadUrl: PropTypes.string,
     }),
   ),
+  submissionUUID: PropTypes.string,
 };
 
 export default PreviewDisplay;

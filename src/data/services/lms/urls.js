@@ -14,6 +14,16 @@ const fetchSubmissionLockUrl = () => `${baseEsgUrl()}submission/lock`;
 const batchUnlockSubmissionsUrl = () => `${baseEsgUrl()}submission/batch/unlock`;
 const updateSubmissionGradeUrl = () => `${baseEsgUrl()}submission/grade`;
 
+const aiGradeSubmissionUrl = () => `${api()}ga-extensions/v1/ai-grader/single-submission/`;
+const aiGraderFeedbackUrl = () => `${api()}ga-extensions/v1/ai-grader/feedback/`;
+const aiGraderConfigUrl = () => `${api()}ga-extensions/v1/ai-grader/config/`;
+const parseSubmissionFileUrl = (oraBlockId, submissionUUID, fileIndex) => (
+  `${api()}ga-extensions/v1/ai-grader/ora/${encodeURIComponent(oraBlockId)}/submissions/${encodeURIComponent(submissionUUID)}/files/${fileIndex}/parse`
+);
+const summarizeSubmissionFileUrl = (oraBlockId, submissionUUID, fileIndex) => (
+  `${api()}ga-extensions/v1/ai-grader/ora/${encodeURIComponent(oraBlockId)}/submissions/${encodeURIComponent(submissionUUID)}/files/${fileIndex}/summary`
+);
+
 const course = (courseId) => `${baseUrl()}/courses/${courseId}`;
 
 const openResponse = (courseId) => (
@@ -30,6 +40,11 @@ export default StrictDict({
   fetchSubmissionLockUrl,
   batchUnlockSubmissionsUrl,
   updateSubmissionGradeUrl,
+  aiGradeSubmissionUrl,
+  aiGraderFeedbackUrl,
+  aiGraderConfigUrl,
+  parseSubmissionFileUrl,
+  summarizeSubmissionFileUrl,
   baseUrl,
   course,
   openResponse,
