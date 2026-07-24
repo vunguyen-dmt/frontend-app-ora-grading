@@ -168,6 +168,10 @@ const summarizeSubmissionFile = (oraBlockId, submissionUUID, fileIndex) => get(
   urls.summarizeSubmissionFileUrl(oraBlockId, submissionUUID, fileIndex),
 ).then(response => response.data);
 
+const summarizeSubmission = (oraLocation, submissionUUID) => get(
+  stringifyUrl(urls.summarizeSubmissionUrl(), { oraLocation, submissionUUID }),
+).then(response => response.data);
+
 const fetchAiGraderConfig = (oraLocation) => get(
   stringifyUrl(urls.aiGraderConfigUrl(), { oraLocation }),
 ).then(response => response.data);
@@ -207,4 +211,5 @@ export default StrictDict({
   saveAiGraderConfig,
   parseSubmissionFile,
   summarizeSubmissionFile,
+  summarizeSubmission,
 });

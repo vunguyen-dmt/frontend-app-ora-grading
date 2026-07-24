@@ -23,23 +23,23 @@ const messages = defineMessages({
   },
   aiGrader: {
     id: 'ora-grading.Rubric.aiGrader',
-    defaultMessage: 'AI Grader',
+    defaultMessage: 'AI Access',
     description: 'Button to trigger AI-assisted grading',
   },
   aiGraderPending: {
     id: 'ora-grading.Rubric.aiGraderPending',
     defaultMessage: 'Grading...',
-    description: 'AI Grader button text while grading is in progress',
+    description: 'AI Access button text while grading is in progress',
   },
   aiGraderComplete: {
     id: 'ora-grading.Rubric.aiGraderComplete',
     defaultMessage: 'Done',
-    description: 'AI Grader button text after successful grading',
+    description: 'AI Access button text after successful grading',
   },
   aiGraderError: {
     id: 'ora-grading.Rubric.aiGraderError',
-    defaultMessage: 'AI Grader',
-    description: 'AI Grader button text after an error',
+    defaultMessage: 'AI Access',
+    description: 'AI Access button text after an error',
   },
   aiGraderErrorDefault: {
     id: 'ora-grading.Rubric.aiGraderErrorDefault',
@@ -53,7 +53,7 @@ const messages = defineMessages({
   },
   aiGraderExplainTitle: {
     id: 'ora-grading.Rubric.aiGraderExplainTitle',
-    defaultMessage: 'AI Grading Explanation',
+    defaultMessage: 'AI Access Explanation',
     description: 'Title of the AI grading explanation modal',
   },
   aiGraderOverallComment: {
@@ -76,19 +76,24 @@ const messages = defineMessages({
     defaultMessage: 'Assessment Result',
     description: 'Label for the assessment result section in the AI grading explanation',
   },
+  aiGraderDisclaimerTitle: {
+    id: 'ora-grading.Rubric.aiGraderDisclaimerTitle',
+    defaultMessage: 'Towards automatic grading',
+    description: 'Title inside the disclaimer box in the AI explanation modal',
+  },
   aiGraderExplainDisclaimerLine1: {
     id: 'ora-grading.Rubric.aiGraderExplainDisclaimerLine1',
-    defaultMessage: 'AI Grader is built to assist, not replace, the course staff; human-in-the-loop is always necessary.',
+    defaultMessage: 'AI Access is built to assist, not replace, the course staff; human-in-the-loop is always necessary.',
     description: 'First line of disclaimer warning in the AI grading explanation modal',
   },
   aiGraderExplainDisclaimerLine2: {
     id: 'ora-grading.Rubric.aiGraderExplainDisclaimerLine2',
-    defaultMessage: 'The clearer the assignment instructions and grading criteria, the more accurate the AI Grader\'s grading results will be.',
+    defaultMessage: 'The clearer the assignment instructions and grading criteria, the more accurate the AI Access\'s grading results will be.',
     description: 'Second line of disclaimer warning in the AI grading explanation modal',
   },
   aiGraderExplainDisclaimerLine3: {
     id: 'ora-grading.Rubric.aiGraderExplainDisclaimerLine3',
-    defaultMessage: 'Avoid adding images, files, links, or complex format to the instruction prompt, it helps the AI Grader read your prompt faster and more accurate.',
+    defaultMessage: 'Avoid adding images, files, links, or complex format to the instruction prompt, it helps the AI Access read your prompt faster and more accurate.',
     description: 'Third line of disclaimer warning in the AI grading explanation modal',
   },
   aiGraderFullPromptLabel: {
@@ -103,7 +108,7 @@ const messages = defineMessages({
   },
   aiGraderFeedbackTitle: {
     id: 'ora-grading.Rubric.aiGraderFeedbackTitle',
-    defaultMessage: 'AI Grader Feedback',
+    defaultMessage: 'AI Access Feedback',
     description: 'Title of the AI grading feedback modal',
   },
   aiGraderFeedbackPlaceholder: {
@@ -128,12 +133,12 @@ const messages = defineMessages({
   },
   aiGraderConfigTitle: {
     id: 'ora-grading.Rubric.aiGraderConfigTitle',
-    defaultMessage: 'AI Grader Configuration',
+    defaultMessage: 'AI Access Configuration',
     description: 'Title of the AI grader config modal',
   },
   aiGraderConfigHelp: {
     id: 'ora-grading.Rubric.aiGraderConfigHelp',
-    defaultMessage: 'Enter usernames of learners you have manually graded, separated by commas or newlines. The AI Grader will use their graded submissions as examples to calibrate its grading. Leave empty to use the default model.',
+    defaultMessage: 'Enter usernames of learners you have manually graded, separated by commas or newlines. The AI Access will use their graded submissions as examples to calibrate its grading. Leave empty to use the default model.',
     description: 'Help text shown in the AI grader config modal',
   },
   aiGraderConfigPlaceholder: {

@@ -27,8 +27,9 @@ export const FileRenderer = ({
     rendererProps,
   } = renderHooks({ file, intl });
 
-  const isImage = RENDERERS[getFileType(file.name)] === ImageRenderer;
-  const imageLoadedSuccessfully = isImage && !isLoading && !errorStatus && file.downloadUrl;
+  const renderer = RENDERERS[getFileType(file.name)];
+  const loaded = !isLoading && !errorStatus && file.downloadUrl;
+  const showExtract = loaded && renderer === ImageRenderer;
 
   return (
     <FileCard key={file.downloadUrl} file={file}>
@@ -49,7 +50,7 @@ export const FileRenderer = ({
           )}
         </>
       )}
-      {imageLoadedSuccessfully && (
+      {showExtract && (
         <ExtractTextButton
           submissionUUID={submissionUUID}
           fileIndex={fileIndex}

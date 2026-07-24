@@ -32,10 +32,6 @@ const ExtractTextButton = ({ submissionUUID, fileIndex }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [summaryText, setSummaryText] = useState(null);
-  const [isSummarizing, setIsSummarizing] = useState(false);
-  const [summaryError, setSummaryError] = useState(null);
-
   const handleExtract = () => {
     if (isLoading) {
       return;
@@ -55,28 +51,6 @@ const ExtractTextButton = ({ submissionUUID, fileIndex }) => {
       })
       .finally(() => {
         setIsLoading(false);
-      });
-  };
-
-  const handleSummarize = () => {
-    if (isSummarizing) {
-      return;
-    }
-    setIsSummarizing(true);
-    setSummaryError(null);
-
-    api.summarizeSubmissionFile(locationId(), submissionUUID, fileIndex)
-      .then((data) => {
-        setSummaryText(data?.summary || '');
-      })
-      .catch((err) => {
-        const message = err?.response?.data?.error
-          || err?.message
-          || 'Failed to summarize file.';
-        setSummaryError(message);
-      })
-      .finally(() => {
-        setIsSummarizing(false);
       });
   };
 
@@ -115,22 +89,58 @@ const ExtractTextButton = ({ submissionUUID, fileIndex }) => {
               ) : '(No text content extracted)'}
             </Card.Section>
           </Card>
-
-          <Button
-            variant="outline-primary"
-            size="sm"
-            className="mt-2"
-            onClick={handleSummarize}
-          >
-            {isSummarizing ? (
-              <>
-                <Spinner animation="border" size="sm" className="mr-2" />
-                Summarizing...
-              </>
-            ) : 'Summary'}
-          </Button>
         </>
       )}
+    </div>
+  );
+};
+
+ExtractTextButton.propTypes = {
+  submissionUUID: PropTypes.string.isRequired,
+  fileIndex: PropTypes.number.isRequired,
+};
+
+const SummarizeButton = ({ submissionUUID, fileIndex }) => {
+  const [summaryText, setSummaryText] = useState(null);
+  const [isSummarizing, setIsSummarizing] = useState(false);
+  const [summaryError, setSummaryError] = useState(null);
+
+  const handleSummarize = () => {
+    if (isSummarizing) {
+      return;
+    }
+    setIsSummarizing(true);
+    setSummaryError(null);
+
+    api.summarizeSubmissionFile(locationId(), submissionUUID, fileIndex)
+      .then((data) => {
+        setSummaryText(data?.summary || '');
+      })
+      .catch((err) => {
+        const message = err?.response?.data?.error
+          || err?.message
+          || 'Failed to summarize file.';
+        setSummaryError(message);
+      })
+      .finally(() => {
+        setIsSummarizing(false);
+      });
+  };
+
+  return (
+    <div className="mt-2">
+      <Button
+        variant="outline-primary"
+        size="sm"
+        onClick={handleSummarize}
+      >
+        {isSummarizing ? (
+          <>
+            <Spinner animation="border" size="sm" className="mr-2" />
+            Summarizing...
+          </>
+        ) : 'Summary'}
+      </Button>
 
       {summaryError && (
         <Alert variant="danger" className="mt-2">
@@ -144,23 +154,24 @@ const ExtractTextButton = ({ submissionUUID, fileIndex }) => {
             This summary is made by a Large Language Model (LLM).
           </Alert>
           <Card className="mt-2">
-          <Card.Section className="extracted-text-content">
-            {summaryText ? (
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {doubleNewlines(summaryText)}
-              </ReactMarkdown>
-            ) : '(No summary available)'}
-          </Card.Section>
-        </Card>
+            <Card.Section className="extracted-text-content">
+              {summaryText ? (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {doubleNewlines(summaryText)}
+                </ReactMarkdown>
+              ) : '(No summary available)'}
+            </Card.Section>
+          </Card>
         </>
       )}
     </div>
   );
 };
 
-ExtractTextButton.propTypes = {
+SummarizeButton.propTypes = {
   submissionUUID: PropTypes.string.isRequired,
   fileIndex: PropTypes.number.isRequired,
 };
 
+export { SummarizeButton };
 export default ExtractTextButton;

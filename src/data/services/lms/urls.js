@@ -23,6 +23,7 @@ const parseSubmissionFileUrl = (oraBlockId, submissionUUID, fileIndex) => (
 const summarizeSubmissionFileUrl = (oraBlockId, submissionUUID, fileIndex) => (
   `${api()}ga-extensions/v1/ai-grader/ora/${encodeURIComponent(oraBlockId)}/submissions/${encodeURIComponent(submissionUUID)}/files/${fileIndex}/summary`
 );
+const summarizeSubmissionUrl = () => `${api()}ga-extensions/v1/ai-grader/single-submission-summary/`;
 
 const course = (courseId) => `${baseUrl()}/courses/${courseId}`;
 
@@ -45,6 +46,7 @@ export default StrictDict({
   aiGraderConfigUrl,
   parseSubmissionFileUrl,
   summarizeSubmissionFileUrl,
+  summarizeSubmissionUrl,
   baseUrl,
   course,
   openResponse,

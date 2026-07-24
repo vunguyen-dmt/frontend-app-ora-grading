@@ -227,7 +227,7 @@ export const Rubric = () => {
                 <IconButton
                   src={Settings}
                   iconAs={Icon}
-                  alt="AI Grader Settings"
+                  alt="AI Access Settings"
                   size="sm"
                   className="ml-1"
                   onClick={handleOpenConfig}
@@ -400,6 +400,7 @@ export const Rubric = () => {
             </div>
           )}
           <Alert variant="warning" className="mt-3">
+            <Alert.Heading>{intl.formatMessage(messages.aiGraderDisclaimerTitle)}</Alert.Heading>
             <div>{intl.formatMessage(messages.aiGraderExplainDisclaimerLine1)}</div>
             <div>{intl.formatMessage(messages.aiGraderExplainDisclaimerLine2)}</div>
             <div>{intl.formatMessage(messages.aiGraderExplainDisclaimerLine3)}</div>
