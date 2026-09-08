@@ -23,6 +23,7 @@ export const PDFRenderer = ({
     pageNumber,
     numPages,
     relativeHeight,
+    containerWidth,
     wrapperRef,
     onDocumentLoadSuccess,
     onLoadPageSuccess,
@@ -43,7 +44,7 @@ export const PDFRenderer = ({
       >
         {/* <Outline /> */}
         <div className="page-wrapper" style={{ height: relativeHeight }}>
-          <Page pageNumber={pageNumber} onLoadSuccess={onLoadPageSuccess} />
+          <Page pageNumber={pageNumber} width={containerWidth} onLoadSuccess={onLoadPageSuccess} />
         </div>
       </Document>
       <ActionRow className="d-flex justify-content-center m-0">

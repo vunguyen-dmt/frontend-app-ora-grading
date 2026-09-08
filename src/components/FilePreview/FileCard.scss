@@ -13,12 +13,7 @@
   height: auto;
 }
 
-.pdf-renderer {
-  .react-pdf__Page__canvas {
-    width: 100% !important;
-    height: auto !important;
-  }
-}
+.pdf-renderer {}
 
 .txt-renderer {
   white-space: pre-wrap;

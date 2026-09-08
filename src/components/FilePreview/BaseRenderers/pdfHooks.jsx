@@ -14,12 +14,14 @@ export const state = StrictDict({
   pageNumber: (val) => useState(val),
   numPages: (val) => useState(val),
   relativeHeight: (val) => useState(val),
+  containerWidth: (val) => useState(val),
 });
 
 export const initialState = {
   pageNumber: 1,
   numPages: 1,
   relativeHeight: 1,
+  containerWidth: undefined,
 };
 
 export const safeSetPageNumber = ({ numPages, rawSetPageNumber }) => (pageNumber) => {
@@ -37,6 +39,9 @@ export const rendererHooks = ({
   const [relativeHeight, setRelativeHeight] = module.state.relativeHeight(
     initialState.relativeHeight,
   );
+  const [containerWidth, setContainerWidth] = module.state.containerWidth(
+    initialState.containerWidth,
+  );
 
   const setPageNumber = module.safeSetPageNumber({ numPages, rawSetPageNumber });
 
@@ -46,6 +51,7 @@ export const rendererHooks = ({
     pageNumber,
     numPages,
     relativeHeight,
+    containerWidth,
     wrapperRef,
     onDocumentLoadSuccess: (args) => {
       onSuccess();
@@ -54,9 +60,10 @@ export const rendererHooks = ({
     onLoadPageSuccess: (page) => {
       const pageWidth = page.view[2];
       const pageHeight = page.view[3];
-      const wrapperHeight = wrapperRef.current.getBoundingClientRect().width;
-      const newHeight = (wrapperHeight * pageHeight) / pageWidth;
+      const wrapperWidth = wrapperRef.current.getBoundingClientRect().width;
+      const newHeight = (wrapperWidth * pageHeight) / pageWidth;
       setRelativeHeight(newHeight);
+      setContainerWidth(wrapperWidth);
     },
     onDocumentLoadError: (error) => {
       let status;
